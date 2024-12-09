@@ -1,25 +1,48 @@
 let contactForm = document.getElementById("contact-form");
-let formFields = [
-    new FormItem("nameLabel", "floatingName", "Rajoutez votre nom"),
-    new FormItem("mailLabel", "floatingMail", "Ajoutez votre mail"),
-    new FormItem("messageLabel", "floatingMessage", "Rajoutez votre message de contact"),
-];
+let modal = document.getElementById("myModal");
+let thanksMessage = document.getElementById("thanks-message");
+let span = document.getElementsByClassName("close")[0];
+
+let formFields = {
+    'name': new FormItem("nameLabel", "floatingName", "Rajoutez votre nom"),
+    'mail': new FormItem("mailLabel", "floatingMail", "Ajoutez votre mail"),
+    'message': new FormItem("messageLabel", "floatingMessage", "Rajoutez votre message de contact"),
+};
+
+
 
 contactForm.addEventListener('submit', (event) => {
     event.preventDefault();
-    checkFormFields(formFields);
+    if (checkFormFields(formFields)) {
+        thanksMessage.textContent = `Merci ${formFields['name'].input.value} !`;
+        modal.style.visibility = "visible";
+    }
 });
 
-
-// let dlButton = document.getElementById("dl-button");
-// dlButton.addEventListener('click', () => {
-
-// });
-
 function checkFormFields(fieldsArray) {
-    fieldsArray.forEach(formItem => {
-        formItem.updateField(formItem.checkIfErrored());
-    });
+    let areValid = true;
+    for (let [key, formItem] of Object.entries(fieldsArray)) {
+        let isErrored = formItem.checkIfErrored();
+        if (isErrored) {
+            areValid = false;
+            console.log(`FAUTE SUR ${formItem.value.label.textContent}`);
+        }
+        formItem.updateField(isErrored);
+    }
+    return areValid;
+}
+
+
+// When the user clicks on <span> (x), close the modal
+span.onclick = function() {
+    modal.style.visibility = "hidden";
+}
+
+// When the user clicks anywhere outside of the modal, close it
+window.onclick = function(event) {
+  if (event.target == modal) {
+    modal.style.visibility = "hidden";
+  }
 }
 
 /**
@@ -55,7 +78,7 @@ function FormItem(labelId, inputId, errorMessage) {
     };
 
     this.updateField = function(isErrored) {
-        this.input.style.borderColor = isErrored ? "red" : "black";
+        this.input.style.borderColor = isErrored ? "red" : "light-grey";
         this.label.style.color = isErrored ? "red" : "black";
         isErrored ? this.errorSpan.appendChild(this.error) : this.error.remove();
     };
