@@ -84,7 +84,7 @@ function FormItem(labelId, inputId, errorMessage) {
     };
 
     this.updateField = function(isErrored) {
-        this.input.style.borderColor = isErrored ? "red" : "light-grey";
+        this.input.style.borderColor = isErrored ? "red" : "lightgrey";
         this.label.style.color = isErrored ? "red" : "black";
         isErrored ? this.errorSpan.appendChild(this.error) : this.error.remove();
     };
