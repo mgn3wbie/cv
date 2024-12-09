@@ -32,7 +32,6 @@ function checkFormFields(fieldsArray) {
         let isErrored = formItem.checkIfErrored();
         if (isErrored) {
             areValid = false;
-            console.log(`FAUTE SUR ${formItem.value.label.textContent}`);
         }
         formItem.updateField(isErrored);
     }
