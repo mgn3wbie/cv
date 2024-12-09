@@ -16,8 +16,15 @@ contactForm.addEventListener('submit', (event) => {
     if (checkFormFields(formFields)) {
         thanksMessage.textContent = `Merci ${formFields['name'].input.value} !`;
         modal.style.visibility = "visible";
+        resetAllFields(formFields);
     }
 });
+
+function resetAllFields(fieldsArray) {
+    for (let [key, formItem] of Object.entries(fieldsArray)) {
+        formItem.input.value = "";
+    }
+}
 
 function checkFormFields(fieldsArray) {
     let areValid = true;
